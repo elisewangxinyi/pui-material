@@ -21,7 +21,7 @@ body {
     box-sizing: border-box;
 
     width: 450px;
-    height: 150px;
+    min-height: 150px;;
     
     margin-left: auto;
     margin-right: auto;
@@ -36,8 +36,9 @@ body {
 
 .notecard-left {
   flex-grow:1;
-  background-color: blue;
+  /* background-color: blue; */
 }
+
 .notecard-right {
   width:30px;
   flex-shrink:0;
@@ -48,6 +49,7 @@ body {
 .note-title {
   font-size: 18px;
   font-weight: 500;
+  margin-bottom:10px;
 }
 
 .note-body {
@@ -58,4 +60,24 @@ body {
 
 .notecard-main-content {
   display:flex;
+}
+
+.notecard-thumbnail {
+  width: 70px;
+  height: 70px;
+  object-fit:cover;
+  border-radius:7px;
+}
+
+.notecard-text {
+  width: calc(100% - 70px - 20px);
+  margin-top:15px;
+  margin-left:20px;
+  /* overflow:scroll; */
+}
+
+.notecard-footer {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #595959;
 }
