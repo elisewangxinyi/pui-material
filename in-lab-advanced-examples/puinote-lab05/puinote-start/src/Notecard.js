@@ -1,3 +1,5 @@
+// string include(keyword) to implement search
+
 import React, { Component } from 'react';
 import './Notecard.css';
 
@@ -5,17 +7,43 @@ class Notecard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
-    };    
+      isExpanded: false
+    };   
+    
+    this.toggleNote = this.toggleNote.bind(this)
+  }
+
+  toggleNote() {
+    this.setState({
+      isExpanded: !this.state.isExpanded
+    })
   }
 
   render() {
+    let notecardClass = 'notecard';
+
+    if (this.state.isExpanded) {
+      notecardClass += 'expanded';
+    }
+
+    const categoryStyle = {
+      margin: "10px",
+      width: "fit-content",
+      border: "1px solid",
+      borderColor: this.props.noteCategory == "Work" ? "blue":"green",
+      backgroundColor: this.props.noteCategory == "Work" ? "blue":"green"
+    }
+
+
     return (
-      <div className="notecard expanded">         
+      <div className={notecardClass}>         
         <div className="notecard-left">
           <div className="notecard-main-content">
             <img className="notecard-thumbnail" src={this.props.imageURL}/>
             <div className="notecard-text">
+              <div className='noteCategory'style={categoryStyle}>
+                {this.props.noteCategory}
+              </div>
               <div className="note-title-container">
                 <div className="note-title">
                   {this.props.noteTitle}
@@ -31,17 +59,18 @@ class Notecard extends Component {
           </div>
         </div>
         <div className="notecard-right">
-          <div className="icon icon-expand material-symbols-outlined">
+          <div className="icon icon-expand material-symbols-outlined" onClick={this.toggleNote}>
             expand_more
           </div>
-          <div className="icon icon-collapse material-symbols-outlined">
+          <div className="icon icon-collapse material-symbols-outlined"onClick={this.toggleNote}>
             expand_less
           </div>
           <div className="toolbar">
             <div className="material-symbols-outlined icon icon-edit" onClick={() => this.props.onEdit(this.props.noteIndex)}>
               edit
             </div>
-            <div className="material-symbols-outlined icon icon-delete">
+            <div className="material-symbols-outlined icon icon-delete"
+                onClick={() => {this.props.onRemove(this.props.noteIndex)}}>
               delete
             </div>
           </div>
