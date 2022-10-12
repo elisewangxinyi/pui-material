@@ -8,51 +8,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notecardData: [
-        {
-          imageURL: "assets/warhol-frog.png",
-          noteTitle: "This is the First Note",
-          noteBody: "Here is some body text for the first note.",
-          noteCategory: "Work",
-          noteFooter: "Sep 1 2022, 10:25"
-        },
-        {
-          imageURL: "assets/warhol-orangutan.png" ,
-          noteTitle: "This is the Second Note" ,
-          noteBody: "And here is some body text for the second note! What could be next?",
-          noteCategory: "Leisure",
-          noteFooter: "Sep 1 2022, 10:25"
-        },
-        {
-          imageURL: "assets/warhol-eagle.png" ,
-          noteTitle: "This is the Third Note" ,
-          noteBody: "Yep, you guessed it, here is some body text for the third note." ,
-          noteCategory: "Work",
-          noteFooter: "Sep 1 2022, 10:25"
-        },
-        {
-          imageURL: "assets/warhol-frog.png",
-          noteTitle: "This is the First Note",
-          noteBody: "Here is some body text for the first note.",
-          noteCategory: "Work",
-          noteFooter: "Sep 1 2022, 10:25"
-        },
-        {
-          imageURL: "assets/warhol-orangutan.png" ,
-          noteTitle: "This is the Second Note" ,
-          noteBody: "And here is some body text for the second note! What could be next?",
-          noteCategory: "Leisure",
-          noteFooter: "Sep 1 2022, 10:25"
-        },
-        {
-          imageURL: "assets/warhol-eagle.png" ,
-          noteTitle: "This is the Third Note" ,
-          noteBody: "Yep, you guessed it, here is some body text for the third note." ,
-          noteCategory: "Work",
-          noteFooter: "Sep 1 2022, 10:25"
-        },        
-      ],
-      
+      notecardData: JSON.parse(localStorage.getItem("notecardData") || []),
       selectedNoteIndex: null,
       editorNoteTitle: "",
       editorNoteCategory: "",
@@ -60,6 +16,14 @@ class App extends Component {
       isEditing: false,
       filterCategory: "All", 
     }
+  }
+
+  componentDidMount() {
+    localStorage.setItem("notecardData", JSON.stringify(this.state.notecardData))
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem("notecardData", JSON.stringify(this.state.notecardData))
   }
 
   filterButtonHandler = (category) => {
@@ -102,13 +66,21 @@ class App extends Component {
   }
 
   addNote = () => {
-    let newNotecardItem = {
-      imageURL: "assets/warhol-butterfly.png",
-      noteTitle: "This is a brand new Note",
-      noteBody: "Here is some body text for the new note.",
-      noteCategory: "Leisure",
-      noteFooter: "Sep 1 2022, 10:25"
-    }
+    //fetch from server
+    fetch("https://api.thecatapi.com/v1/images/search")
+    .then(res => (res.json())
+    .then(
+      (result => {
+        let newNotecardItem = {
+          imageURL: result[0]["url"],
+          noteTitle: "This is a brand new Note",
+          noteBody: "Here is some body text for the new note.",
+          noteCategory: "Leisure",
+          noteFooter: "Sep 1 2022, 10:25"
+        }
+      })
+    ))
+    
 
     let newNotecardData = this.state.notecardData
     newNotecardData.push(newNotecardItem)
